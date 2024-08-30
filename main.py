@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,6 +9,8 @@ from pydantic import BaseModel
 from sql_app import crud, models, schemas
 from sql_app.database import SessionLocal, engine
 from sql_app.auth import create_access_token, verify_token, Token, TokenData
+
+load_dotenv()
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -35,7 +40,17 @@ def get_db():
 
 @app.post("/token", response_model=Token)
 def login(form_data: schemas.Login):
-    if form_data.username == "userok" and form_data.password == "test1234":
+    """
+    Endpoint to get a token for authentication.
+
+    Accepts a POST with a `schemas.Login` object as the body.
+    Returns a `Token` object with the `access_token` and `token_type` fields.
+    Raises a `HTTPException` with a 401 status code if the credentials are incorrect.
+    """
+    valid_username = os.getenv("VALID_USERNAME")
+    valid_password = os.getenv("VALID_PASSWORD")
+
+    if form_data.username == valid_username and form_data.password == valid_password:
         access_token = create_access_token(data={"sub": form_data.username})
         return {"access_token": access_token, "token_type": "bearer"}
     else:

@@ -3,7 +3,10 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import os 
 
+load_dotenv()
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -13,7 +16,7 @@ class TokenData(BaseModel):
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-SECRET_KEY = "gubra_secret"  
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 5
 

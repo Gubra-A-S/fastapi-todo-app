@@ -63,3 +63,28 @@ http://127.0.0.1:8000/todos/<todoItemID>
 
 For further details, you can refer to <a href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a> after starting the server. It will give you an auto generated and very detailed documentation.
 
+### Changes Made in this Fork
+
+**Authorization**
+
+- A security layer has been added to the endpoints, requiring a JWT token generated via a unique username and password.
+
+**Token Generation Endpoint**
+
+- A POST action has been created on the `/token` endpoint, allowing for session validation and tokenization. The session will be stored in the local storage managed by the Front End.
+
+**Unique Username and Password**
+
+- A general username and password are registered in the `.env` file. These can be easily changed directly in the file.
+
+**API Data Access**
+
+- To verify the data, you can use Postman with the endpoint `http://127.0.0.1:8000/todos`, adding the Bearer Token in the authorization tab with the session token.
+
+- The session token can be obtained using Postman or http://127.0.0.1:8000/docs by making a POST request to the endpoint `http://127.0.0.1:8000/token`, including the following JSON in the Body:
+
+  ```json
+  {
+    "username": "*******",
+    "password": "*******"
+  }
